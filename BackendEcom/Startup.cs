@@ -35,6 +35,7 @@ namespace BackendEcom
             services.AddTransient<UserInterface, UserClass>();
             services.AddTransient<SellerInterface, SellerTable>();
             services.AddTransient<CustomerInterface, CustomerTable>();
+            services.AddTransient<ProductInterface, ProductTable>();
             services.AddMvc();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
