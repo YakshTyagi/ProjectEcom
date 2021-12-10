@@ -17,7 +17,7 @@ namespace BackendEcom.Repository
         }
         public IEnumerable<Models.ProductList> GetProducts()
         {
-            var response = (from prod in context.ProductList
+            var response = (from prod in context.Product
                             join pv in context.ProductVariation on prod.ProductId equals pv.ProductId
                             join pr in context.ProductReview on prod.ProductId equals pr.ProductId
                             select new Models.ProductList
@@ -41,11 +41,11 @@ namespace BackendEcom.Repository
             return response;
         }
 
-        public string Insert(ProductList model)
+        public string Insert(Product model)
         {
             try
             {
-                context.ProductList.Add(model);
+                context.Product.Add(model);
                 context.SaveChanges();
                 str = "User saved successfully.";
 

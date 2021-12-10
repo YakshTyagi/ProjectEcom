@@ -13,6 +13,6 @@ namespace BackendEcom.IRepository
         public string Insert(UserTable model);
         public UserTable GetByUserGuid(Guid id);
 
-       // public UserTable GetIdByEmail(string Email);
+        public UserTable GetIdByEmail(string email);
     }
 }

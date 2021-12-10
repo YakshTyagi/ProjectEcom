@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BackendEcom.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     [ApiController]
     public class CustomerController : ControllerBase
     {

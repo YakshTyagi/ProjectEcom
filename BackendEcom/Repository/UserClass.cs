@@ -46,9 +46,11 @@ namespace BackendEcom.Repository
             return response;
         }
 
-        public UserTable GetIdByEmail(string Email)
+        public UserTable GetIdByEmail(string email)
         {
-            var response = context.UserTable.FirstOrDefault(x => x.Email == Email);
+            var response = (from user in context.UserTable
+                            where user.Email == email
+                            select user).FirstOrDefault();
             return response;
         }
     }

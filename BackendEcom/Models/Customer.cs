@@ -10,7 +10,7 @@ namespace BackendEcom.Models
     public partial class Customer
     {
         public Guid? UserId { get; set; }
-        public decimal? CustomerContact { get; set; }
+        public decimal CustomerContact { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? LastUpdated { get; set; }
         public string CreatedBy { get; set; }

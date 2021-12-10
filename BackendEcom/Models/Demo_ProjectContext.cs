@@ -29,7 +29,6 @@ namespace BackendEcom.Models
         public virtual DbSet<OrderStatus> OrderStatus { get; set; }
         public virtual DbSet<OrderTable> OrderTable { get; set; }
         public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<ProductList> ProductList { get; set; }
         public virtual DbSet<ProductReview> ProductReview { get; set; }
         public virtual DbSet<ProductVariation> ProductVariation { get; set; }
         public virtual DbSet<RoleTable> RoleTable { get; set; }
@@ -42,7 +41,7 @@ namespace BackendEcom.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-26JC778;Database=Demo_Project;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-26JC778; Database=Demo_Project; Trusted_Connection=True;");
             }
         }
 
@@ -255,16 +254,17 @@ namespace BackendEcom.Models
 
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.CustomerContact)
+                    .HasName("PK__Customer__BB5D1785D38E3872");
+
+                entity.Property(e => e.CustomerContact)
+                    .HasColumnName("Customer_Contact")
+                    .HasColumnType("numeric(10, 0)");
 
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(e => e.CustomerContact)
-                    .HasColumnName("Customer_Contact")
-                    .HasColumnType("numeric(10, 0)");
 
                 entity.Property(e => e.DateCreated)
                     .HasColumnName("date_created")
@@ -283,9 +283,9 @@ namespace BackendEcom.Models
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.HasOne(d => d.User)
-                    .WithMany()
+                    .WithMany(p => p.Customer)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Customer__UserID__30F848ED");
+                    .HasConstraintName("FK__Customer__UserID__08B54D69");
             });
 
             modelBuilder.Entity<OrderProduct>(entity =>
@@ -576,7 +576,8 @@ namespace BackendEcom.Models
 
             modelBuilder.Entity<Seller>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.CompanyContact)
+                    .HasName("PK__Seller__0713D0CDFB5DDBA0");
 
                 entity.Property(e => e.CompanyContact)
                     .HasColumnName("Company_Contact")
@@ -613,9 +614,9 @@ namespace BackendEcom.Models
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.SellerNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Seller)
                     .HasForeignKey(d => d.Sellerid)
-                    .HasConstraintName("FK__Seller__Sellerid__2E1BDC42");
+                    .HasConstraintName("FK__Seller__Sellerid__03F0984C");
             });
 
             modelBuilder.Entity<UserRole>(entity =>

@@ -34,7 +34,7 @@ namespace BackendEcom.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Insert(ProductList model)
+        public ActionResult Insert(Product model)
         {
             var response = repository.Insert(model);
             if (response == "User saved successfully.")

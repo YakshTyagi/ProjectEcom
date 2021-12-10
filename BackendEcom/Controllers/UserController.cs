@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BackendEcom.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -64,21 +64,24 @@ namespace BackendEcom.Controllers
                 return BadRequest("Record not found.");
             }
         }
-        //public ActionResult<UserTable> GetIdByEmail(string Email)
-        //{
-        //    var response = repository.GetIdByEmail(Email);
-        //    if (response != null)
-        //    {
-        //        return Ok(response);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest("Record not found.");
-        //    }
+        [HttpGet("{email}")]
+        public ActionResult<UserTable> GetIdByEmail(string email)
+        {
+            var response = repository.GetIdByEmail(email);
+            if (response != null)
+            {
+                return Ok(response.Id);
+            }
+            else
+            {
+                return BadRequest("Record not found.");
+            }
         }
+    }
+}
         
         
 
        
-    }
+    
 

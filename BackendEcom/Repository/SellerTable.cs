@@ -28,7 +28,7 @@ namespace BackendEcom.Repository
 
                 context.SaveChanges();
 
-                str = "User Added successfully.";
+                str = "User saved successfully.";
             }
 
             catch (Exception ex)

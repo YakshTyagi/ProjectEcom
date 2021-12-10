@@ -12,8 +12,10 @@ namespace BackendEcom.Models
         public UserTable()
         {
             Addresses = new HashSet<Addresses>();
+            Customer = new HashSet<Customer>();
             OrderTable = new HashSet<OrderTable>();
             Product = new HashSet<Product>();
+            Seller = new HashSet<Seller>();
         }
 
         public Guid Id { get; set; }
@@ -29,7 +31,9 @@ namespace BackendEcom.Models
         public string UpdatedBy { get; set; }
 
         public virtual ICollection<Addresses> Addresses { get; set; }
+        public virtual ICollection<Customer> Customer { get; set; }
         public virtual ICollection<OrderTable> OrderTable { get; set; }
         public virtual ICollection<Product> Product { get; set; }
+        public virtual ICollection<Seller> Seller { get; set; }
     }
 }
