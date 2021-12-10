@@ -13,7 +13,7 @@ using FrontendEcom.Models;
 using FrontendEcom.HelperClass;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
-
+using Newtonsoft.Json.Linq;
 
 namespace FrontendEcom.Controllers
 {
@@ -43,17 +43,26 @@ namespace FrontendEcom.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult RegisterUser(UserTable user)
+        public async Task<IActionResult> RegisterUser(UserTable user)
         {
-            
+            HttpResponseMessage result;
+            Guid user1 = new Guid();
             client = api.Initial();
-            var postTask = client.PostAsJsonAsync<UserTable>("api/User/", user);
-           // postTask.Wait();
-            HttpResponseMessage result = postTask.Result;
-            Guid MyId = ((BackendEcom.Models.UserTable)((System.Net.Http.Json.JsonContent)result.RequestMessage.Content).Value).Id;
+            var postTask = client.PostAsJsonAsync<UserTable>("api/User/Insert", user);
+            postTask.Wait();
+            result = postTask.Result;
             if (result.IsSuccessStatusCode)
             {
-                return RedirectToAction("AssignRole");
+                result = await client.GetAsync("api/User/GetIdByEmail/" + user.Email);
+
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var repo = result.Content.ReadAsStringAsync().Result;
+                    user1 = JsonConvert.DeserializeObject<Guid>(repo);
+                    HttpContext.Session.SetString("UserId", JsonConvert.SerializeObject(user1));
+                    return RedirectToAction("AssignRole");
+                }
             }
             return View();
         }
@@ -76,46 +85,90 @@ namespace FrontendEcom.Controllers
         [Route("Register/AssignRole")]
         public ActionResult AssignRole(AssignRoleModel assignRoleModel)
         {
-            
-            ViewBag.RegisterType = new SelectList(
-                                           new List<SelectListItem>
-                                           {
-                                        new SelectListItem { Text = "Seller", Value = "1" },
-                                        new SelectListItem { Text = "Customer", Value = "2"}, //....
-                                           }, "Value", "Text");
+
 
 
             return View();
         }
-
+        [HttpGet]
         [Route("Register/RegisterSeller")]
         public IActionResult RegisterSeller()
         {
             return View();
         }
+        [HttpPost]
         public IActionResult RegisterSeller(Seller seller)
         {
 
+            HttpResponseMessage response;
             client = api.Initial();
-            var PostTask = client.PostAsJsonAsync<Seller>("api/Seller/Insert", seller);
-            HttpResponseMessage result = PostTask.Result;
-            seller.Sellerid = new Guid((string)JsonConvert.DeserializeObject(HttpContext.Session.GetString("UserId")));
+            Guid guid = new Guid();
+            String myId = String.Empty;
 
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                myId = (string)JsonConvert.DeserializeObject(HttpContext.Session.GetString("UserId"));
+                guid = Guid.Parse(myId);
+                seller.Sellerid = guid;
+                var PostTask = client.PostAsJsonAsync<Seller>("api/Seller/Insert", seller);
+                response = PostTask.Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("LoginUser");
+                }
+                else
+                {
+                    ViewBag.ErrorRegistrationFailed = " Registration as Seller Failed";
+                    return View();
+                }
+            }
+            else
+            {
+                ViewBag.ErrorSessionExpired = "Session Expired";
+                return View();
+            }
 
-            return RedirectToAction("LoginUser");
         }
+        [HttpGet]
         [Route("Register/RegisterCustomer")]
         public IActionResult RegisterCustomer()
         {
             return View();
         }
+
+        [HttpPost]
         public IActionResult RegisterCustomer(Customer customer)
         {
 
+            HttpResponseMessage response;
             client = api.Initial();
-            var PostTask = client.PostAsJsonAsync<Customer>("api/Customer/Insert", customer);
-            HttpResponseMessage result = PostTask.Result;
-            customer.UserId = new Guid((string)JsonConvert.DeserializeObject(HttpContext.Session.GetString("UserId")));
+            Guid guid = new Guid();
+            String myId = String.Empty;
+
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                myId = (string)JsonConvert.DeserializeObject(HttpContext.Session.GetString("UserId"));
+                guid = Guid.Parse(myId);
+                customer.UserId = guid;
+                var PostTask = client.PostAsJsonAsync<Customer>("api/Customer/Insert", customer);
+                response = PostTask.Result;
+                //    if (response.IsSuccessStatusCode)
+                //    {
+                //        return RedirectToAction("LoginUser");
+                //    }
+                //    else
+                //    {
+                //        ViewBag.ErrorRegistrationFailed = " Registration as Customer Failed";
+                //        return View();
+                //    }
+                //}
+                //else
+                //{
+                //    ViewBag.ErrorSessionExpired = "Session Expired";
+                //    return View();
+                //}
+
+            }
             return RedirectToAction("LoginUser");
         }
     }

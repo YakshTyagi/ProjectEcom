@@ -2,3 +2,6 @@
     background-image: url(../Images/alvaro-serrano--kr8XPYuSI8-unsplash.jpg);
     background-size: 1380px;
 }
+p.card-body{
+    color:crimson;
+}

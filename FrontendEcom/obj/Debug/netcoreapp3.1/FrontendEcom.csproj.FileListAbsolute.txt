@@ -164,3 +164,4 @@ E:\.net\final project1\FrontendEcom\obj\Debug\netcoreapp3.1\Razor\Views\Register
 E:\.net\final project1\FrontendEcom\obj\Debug\netcoreapp3.1\Razor\Views\Register\RegisterCustomer.cshtml.g.cs
 E:\.net\final project1\FrontendEcom\obj\Debug\netcoreapp3.1\Razor\Views\Register\RegisterSeller.cshtml.g.cs
 E:\.net\final project1\FrontendEcom\obj\Debug\netcoreapp3.1\Razor\Views\Register\AssignRole.cshtml.g.cs
+E:\.net\final project1\FrontendEcom\obj\Debug\netcoreapp3.1\Razor\Views\Product\ProductList.cshtml.g.cs

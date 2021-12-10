@@ -10,23 +10,18 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                <h4>Entry Type</h4>
+                <h4>Registration Type</h4>
             </div>
-           
-            <div class="card-body">
-                <p>
-                    @Html.ActionLink("Register as a Customer", "RegisterCustomer")
-                </p>
-                <p>
-                    @Html.ActionLink("Register as a Seller", "RegisterSeller")
-                </p>
-                <style>
-                    a {
-                        color: #FFFFFF;
-                        text-decoration: none;
-                    }
-                </style>
+            <br/>
+        <center>
+            <div class="form-group">
+                <input type="submit" value="Continue as a Seller" class="btn btn-success" onclick="location.href='@Url.Action("RegisterSeller", "Register")'" />
             </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create as a Customer" class="btn btn-success" onclick="location.href='@Url.Action("RegisterCustomer", "Register")'" />
+            </div>
+        </center>
         </div>
     </div>
 </div>

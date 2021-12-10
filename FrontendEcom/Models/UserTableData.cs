@@ -15,6 +15,7 @@ namespace FrontendEcom.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
         public string Upassword { get; set; }
         public bool? IsDeleted { get; set; }
         public bool? IsActive { get; set; }
